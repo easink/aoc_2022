@@ -43,25 +43,18 @@ defmodule AoC.Day07 do
 
   defp parse_fs([], _cwd, fs), do: fs
 
+  defp parse_fs([entry | entries], cwd, fs) do
+    case entry do
+      ["$", "cd", ".."] -> parse_fs(entries, tl(cwd), fs)
+      ["$", "cd", dir] -> parse_fs(entries, [dir | cwd], fs)
+      ["$", "ls"] -> parse_fs(entries, cwd, fs)
+      ["dir", _dir] -> parse_fs(entries, cwd, fs)
+      [size, _file] -> parse_fs(entries, cwd, update_dir_size(fs, cwd, String.to_integer(size)))
+    end
+  end
+
   # defp parse_fs([["$", "cd", "/"] | entries], _cwd, fs),
   #   do: parse_fs(entries, [], fs)
-
-  defp parse_fs([["$", "cd", ".."] | entries], [_ | cwd], fs),
-    do: parse_fs(entries, cwd, fs)
-
-  defp parse_fs([["$", "cd", dir] | entries], cwd, fs),
-    do: parse_fs(entries, [dir | cwd], fs)
-
-  defp parse_fs([["$", "ls"] | entries], cwd, fs),
-    do: parse_fs(entries, cwd, fs)
-
-  defp parse_fs([["dir", _dir] | entries], cwd, fs),
-    do: parse_fs(entries, cwd, fs)
-
-  defp parse_fs([[size, _file] | entries], cwd, fs) do
-    fs = update_dir_size(fs, cwd, String.to_integer(size))
-    parse_fs(entries, cwd, fs)
-  end
 
   defp update_dir_size(fs, [], _size), do: fs
 
