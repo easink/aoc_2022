@@ -19,13 +19,6 @@ defmodule AoC.Day09 do
     |> length()
   end
 
-  def test() do
-    head = {4, 4}
-    tails = [{4, 2}, {3, 1}, {2, 1}, {1, 1}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}]
-
-    walk_tails(:input, head, tails, [{0, 0}])
-  end
-
   # defp print(head, tails) do
   #   knots = [head | tails]
 
